@@ -29,7 +29,35 @@ https://hg-code.gitee.io/apidoc-php/use/
 
 ## 扩展功能
 - ### thinkorm | eloquent orm 都可使用,测试案例可看文件`api/controller/TestController.php`
-  ![image_1.png](docs/images/image_1.png)
+  ```injectablephp
+  /**
+     * 测试think orm读写连贯操作
+     * @return void
+     */
+    public function test_think_orm()
+    {
+        $table = \think\facade\Db::table('test');
+        //插入数据
+        $table->insert([
+            'username' => $username = uniqid()
+        ]);
+        d($table->where('username', $username)->findOrEmpty());
+    }
+
+    /**
+     * 测试laravel orm读写连贯操作
+     * @return void
+     */
+    public function test_laravel_orm()
+    {
+        $table = \support\Db::table('test');
+        //插入数据
+        $table->insert([
+            'username' => $username = uniqid()
+        ]);
+        d($table->where('username', $username)->first());
+    }
+  ```
 - ### 自动记录所有数据库操作行为,记录在`runtime/sql_logs`目录下
 - ### apidoc接口文档,访问`域名/apidoc/index.html`
 - ### 定时任务,在`process/Task.php`中定义你的定时任务
@@ -43,4 +71,18 @@ https://hg-code.gitee.io/apidoc-php/use/
       ```
    3. 不使用可以直接到`middleware.php`下注释`\Shiroi\Xhprof\Webman\XhprofMiddleware::class`
       并`composer remove shiroi/xhprof-webman`
-   ![image_2.png](docs/images/image_2.png)
+      ```injectablephp
+      return [
+          '' => [
+              \app\common\middleware\AccessCross::class,
+              \app\common\middleware\LoadCommon::class,
+              // \Shiroi\Xhprof\Webman\XhprofMiddleware::class,
+          ],
+          'api' => [
+              \app\api\middleware\ApiAuth::class,
+          ],
+          'admin' => [
+        
+          ]
+      ];
+      ```
