@@ -2,11 +2,13 @@
 
 namespace app\admin\validate;
 
+use app\admin\model\User;
+
 class UserValidate extends AdminBaseValidate
 {
     protected $rule = [
         'group_id|用户等级'     => 'require',
-        'username|账号'        => 'require',
+        'username|账号'        => 'require|isExists:user:username',
         'password|密码'        => 'require',
         'repassword|再次密码'   => 'require|isSamePassword',
         'mobile|手机号'         => 'require',
@@ -19,6 +21,7 @@ class UserValidate extends AdminBaseValidate
     protected $message = [
         'group_id.require'      => '用户组不能为空',
         'username.require'      => '账号不能为空',
+        'username.isExists'     => '账号已被使用',
         'password.require'      => '密码不能为空',
         'mobile.require'        => '手机号不能为空',
         'nickname.require'      => '昵称不能为空',
@@ -41,5 +44,26 @@ class UserValidate extends AdminBaseValidate
             return false;
         }
         return true;
+    }
+
+    /**
+     * 验证规则定义 - 是否存在
+     * @param $value
+     * @param $field //isExists:数据库表:字段
+     * @param $data
+     * @return bool
+     */
+    public function isExists($value, $field, $data): bool
+    {
+        $fieldArr = explode(':', $field);
+        $where = [
+            ['delete_time', '=', 0],
+            [$fieldArr[1], '=', $value],
+        ];
+        if(isset($data['id'])){
+            $where[] = ['id', '<>', $data['id']];
+        }
+        $info = (new User())->where($where)->findOrEmpty();
+        return $info->isEmpty();
     }
 }

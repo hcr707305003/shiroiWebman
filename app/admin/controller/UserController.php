@@ -189,7 +189,7 @@ class UserController extends AdminBaseController
             if(!($param['password'] ?? '')) {
                 unset($param['password']);
             }
-            $check = $validate->scene('admin_edit')->check($param);
+            $check = $validate->scene('admin_edit')->check(array_merge($param, ['id' => $id]));
             if (!$check) {
                 return admin_error($validate->getError());
             }

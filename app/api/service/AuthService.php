@@ -24,7 +24,7 @@ class AuthService extends ApiBaseService
     public function userLogin($username, $password): array
     {
         /** @var User $user */
-        $user = static::$userModel::where('username|mobile|unique_id', '=', $username)->findOrEmpty();
+        $user = static::$userModel::where('username|app_id', '=', $username)->findOrEmpty();
 
         //用户是否存在
         if ($user->isEmpty()) {

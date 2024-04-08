@@ -27,8 +27,6 @@ use think\model\relation\BelongsTo;
  */
 class User extends AdminBaseModel
 {
-    use SoftDelete;
-
     protected $json = ['setting'];
 
     // 可搜索字段
