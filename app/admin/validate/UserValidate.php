@@ -31,8 +31,8 @@ class UserValidate extends AdminBaseValidate
     ];
 
     protected $scene = [
-        'admin_add'     => ['group_id', 'username', 'password', 'mobile', 'nickname', 'avatar', 'status',],
-        'admin_edit'    => ['id', 'group_id', 'username', 'mobile', 'nickname', 'avatar', 'status',],
+        'admin_add'     => ['group_id', 'username', 'password', 'mobile', 'nickname', 'status',],
+        'admin_edit'    => ['id', 'group_id', 'username', 'mobile', 'nickname', 'status',],
         'admin_del'     => ['id',],
         'admin_disable' => ['id',],
         'admin_enable'  => ['id',],

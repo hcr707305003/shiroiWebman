@@ -318,7 +318,10 @@ class Request extends \Webman\Http\Request
     public function get($name = null, $default = null, string $filter = null)
     {
         if($name && is_array($name)) {
-            return array_intersect_key($this->_data['get'], array_flip($name));
+            $input = array_intersect_key($this->_data['get'], array_flip($name));
+            if ($filter && function_exists($filter)) {
+                $input = $filter($input);
+            }
         } else {
             if (!isset($this->_data['get'])) {
                 $this->parseGet();
@@ -330,8 +333,8 @@ class Request extends \Webman\Http\Request
             if ($filter && function_exists($filter)) {
                 $input = $filter($input);
             }
-            return $input;
         }
+        return $input;
     }
 
     /**
@@ -345,7 +348,10 @@ class Request extends \Webman\Http\Request
     public function post($name = null, $default = null, string $filter = null)
     {
         if($name && is_array($name)) {
-            return array_intersect_key($this->_data['post'], array_flip($name));
+            $input = array_intersect_key($this->_data['post'], array_flip($name));
+            if ($filter && function_exists($filter)) {
+                $input = $filter($input);
+            }
         } else {
             if (!isset($this->_data['post'])) {
                 $this->parsePost();
@@ -357,8 +363,8 @@ class Request extends \Webman\Http\Request
             if ($filter && function_exists($filter)) {
                 $input = $filter($input);
             }
-            return $input;
         }
+        return $input;
     }
 
     /**
@@ -366,12 +372,13 @@ class Request extends \Webman\Http\Request
      *
      * @param string|array|null $name
      * @param mixed|null $default
+     * @param string|null $filter
      * @return array|string|null
      */
-    public function header($name = null, $default = null)
+    public function header($name = null, $default = null, string $filter = null)
     {
         if($name && is_array($name)) {
-            return array_intersect_key($this->_data['headers'], array_flip(array_map('strtolower', $name)));
+            $input = array_intersect_key($this->_data['headers'], array_flip(array_map('strtolower', $name)));
         } else {
             if (!isset($this->_data['headers'])) {
                 $this->parseHeaders();
@@ -380,7 +387,11 @@ class Request extends \Webman\Http\Request
                 return $this->_data['headers'];
             }
             $name = \strtolower($name);
-            return $this->_data['headers'][$name] ?? $default;
+            $input = $this->_data['headers'][$name] ?? $default;
         }
+        if ($filter && function_exists($filter)) {
+            $input = $filter($input);
+        }
+        return $input;
     }
 }

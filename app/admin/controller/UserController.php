@@ -151,7 +151,9 @@ class UserController extends AdminBaseController
     public function add(Request $request, User $model, UserValidate $validate): Response
     {
         if ($request->isPost()) {
-            $param           = $request->post();
+            $param           = $request->post([
+                'group_id', 'username', 'password', 'email', 'mobile', 'nickname', 'avatar', 'qq', 'wechat', 'sex', 'score', 'money', 'address', 'status'
+            ], null, 'array_filter');
             $validate_result = $validate->scene('admin_add')->check($param);
             if (!$validate_result) {
                 return admin_error($validate->getError());
@@ -185,7 +187,9 @@ class UserController extends AdminBaseController
         $id = request()->get('id');
         $data = $model->findOrEmpty($id);
         if ($request->isPost()) {
-            $param = $request->post();
+            $param = $request->post([
+                'group_id', 'username', 'password', 'email', 'mobile', 'nickname', 'avatar', 'qq', 'wechat', 'sex', 'score', 'money', 'address', 'status'
+            ], null, 'array_filter');
             if(!($param['password'] ?? '')) {
                 unset($param['password']);
             }
