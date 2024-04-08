@@ -41,5 +41,6 @@ https://hg-code.gitee.io/apidoc-php/use/
       [xhprof]
       extension=xhprof
       ```
-   3. 不使用可以直接到`middleware.php`下注释`\Shiroi\Xhprof\Webman\XhprofMiddleware::class`并`composer remove shiroi/xhprof-webman`
+   3. 不使用可以直接到`middleware.php`下注释`\Shiroi\Xhprof\Webman\XhprofMiddleware::class`
+      并`composer remove shiroi/xhprof-webman`
    ![image_2.png](docs/images/image_2.png)
