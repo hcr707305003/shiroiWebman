@@ -1,0 +1,21 @@
+<!--空白弹出页面参考模版-->
+{extend name='public/layer_base' /}
+{block name='content'}
+<!-- 这里写内容即可 -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-12">
+            <div class="card">
+                <div disabled="disabled" class="card-body">
+                    {foreach name='raw_data' item='value' key='i'}
+                    {$value|raw}
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(":input").attr("disabled", "disabled");
+</script>
+{/block}

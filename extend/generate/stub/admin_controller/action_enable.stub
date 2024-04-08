@@ -1,0 +1,10 @@
+    /**
+     * 启用
+     * @param [MODEL_NAME] $model
+     * @return Response
+     */
+    public function enable([MODEL_NAME] $model): Response
+    {
+        $result = $model->whereIn('id', request()->post('id'))->update(['status' => 1]);
+        return $result ? admin_success('操作成功', [], URL_RELOAD) : admin_error();
+    }

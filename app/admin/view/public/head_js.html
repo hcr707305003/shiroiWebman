@@ -1,0 +1,201 @@
+<script>
+    // 是否为调试模式
+    var adminDebug = Boolean('{$admin.debug}');
+    // 退出url
+    var logoutUrl = '{:url($admin.logout_url)}';
+    // cookie前缀
+    var cookiePrefix = "{$cookie_prefix|default=''}";
+    // UEditor server地址
+    var UEServer = "{:url('admin/editor/server')}";
+    // 列表页当前选择的ID
+    var dataSelectIds = [];
+    // 上传文件url
+    var uploadUrl = "{:url('admin/file/upload')}";
+    // 富文本编辑器上传文件
+    var editorUploadUrl = '{:url("admin/file/editor")}';
+
+    // 删除文件url
+    var fileDelUrl = "{:url('admin/file/del')}";
+    //UEditor 配置
+    var UEditorConfig = {
+        theme: "default", //皮肤
+        serverUrl: UEServer,
+        toolbars: [[
+            "fullscreen",   // 全屏
+            "source",       // 源代码
+            "|",
+            "undo",         // 撤销
+            "redo",         // 重做
+            "|",
+            "bold",         // 加粗
+            "italic",       // 斜体
+            "underline",    // 下划线
+            "fontborder",   // 字符边框
+            "strikethrough",// 删除线
+            "superscript",  // 上标
+            "subscript",    // 下标
+            "removeformat", // 清除格式
+            "formatmatch",  // 格式刷
+            "autotypeset",  // 自动排版
+            "blockquote",   // 引用
+            "pasteplain",   // 纯文本粘贴模式
+            "|",
+            "forecolor",    // 字体颜色
+            "backcolor",    // 背景色
+            "insertorderedlist",   // 有序列表
+            "insertunorderedlist", // 无序列表
+            "selectall",    // 全选
+            "cleardoc",     // 清空文档
+            "|",
+            "rowspacingtop",// 段前距
+            "rowspacingbottom",    // 段后距
+            "lineheight",          // 行间距
+            "|",
+            "customstyle",         // 自定义标题
+            "paragraph",           // 段落格式
+            "fontfamily",          // 字体
+            "fontsize",            // 字号
+            "|",
+            // "directionalityltr",   // 从左向右输入
+            // "directionalityrtl",   // 从右向左输入
+            "indent",              // 首行缩进
+            "|",
+            "justifyleft",         // 居左对齐
+            "justifycenter",       // 居中对齐
+            "justifyright",
+            "justifyjustify",      // 两端对齐
+            "|",
+            "touppercase",         // 字母大写
+            "tolowercase",         // 字母小写
+            "|",
+            "link",                // 超链接
+            "unlink",              // 取消链接
+            // "anchor",              // 锚点
+            "|",
+            "imagenone",           // 图片默认
+            "imageleft",           // 图片左浮动
+            "imageright",          // 图片右浮动
+            "imagecenter",         // 图片居中
+            "|",
+            "simpleupload",        // 单图上传
+            "insertimage",         // 多图上传
+            "emotion",             // 表情
+            //"scrawl",              // 涂鸦
+            "insertvideo",         // 视频
+            "attachment",          // 附件
+            // "insertframe",         // 插入Iframe
+            // "insertcode",          // 插入代码
+            // "pagebreak",           // 分页
+            //"template",            // 模板
+            //"background",          // 背景
+            // "formula",             // 公式
+            "|",
+            "horizontal",          // 分隔线
+            "date",                // 日期
+            "time",                // 时间
+            "spechars",            // 特殊字符
+            // "wordimage",           // Word图片转存
+            "|",
+            "inserttable",         // 插入表格
+            "deletetable",         // 删除表格
+            "insertparagraphbeforetable",     // 表格前插入行
+            // "insertrow",           // 前插入行
+            // "deleterow",           // 删除行
+            // "insertcol",           // 前插入列
+            // "deletecol",           // 删除列
+           // "mergecells",          // 合并多个单元格
+            //"mergeright",          // 右合并单元格
+            //"mergedown",           // 下合并单元格
+            //"splittocells",        // 完全拆分单元格
+           // "splittorows",         // 拆分成行
+           // "splittocols",         // 拆分成列
+            "|",
+            //"print",               // 打印
+            "preview",             // 预览
+            //"searchreplace",       // 查询替换
+            //"help",                // 帮助
+        ]],
+        imageConfig:{
+            disableOnline: true,
+        },
+        initialFrameHeight: 200,
+        zIndex: 100,
+
+
+    }
+    const TYPE_LIST = ['单选', '多选', '简答题', '综合题', '论述题', '判断题', '不定选项', '填空','案例分析题']
+</script>
+
+<!-- js-cookie -->
+{js href="__ADMIN_PLUGINS__/js-cookie/js.cookie-2.2.0.min.js" /}
+<!-- jQuery 兼容 -->
+{js href="__ADMIN_PLUGINS__/jquery/jquery_3.6.4.min.js" /}
+<!-- Bootstrap 4 -->
+{js href="__ADMIN_PLUGINS__/bootstrap/js/bootstrap.bundle.min.js" /}
+<!-- pjax -->
+{js href="__ADMIN_PLUGINS__/pjax/jquery.pjax.js" /}
+<!-- nprogress -->
+{js href="__ADMIN_PLUGINS__/nprogress/nprogress.js" /}
+<!-- select2 -->
+{js href="__ADMIN_PLUGINS__/select2/js/select2.min.js" /}
+{js href="__ADMIN_PLUGINS__/bootstrap-switch/js/bootstrap-switch.min.js" /}
+<!-- fileinput -->
+{js href="__ADMIN_PLUGINS__/fileinput/js/fileinput.min.js" /}
+<!-- fileinput themes -->
+{js href="__ADMIN_PLUGINS__/fileinput/themes/fas/theme.min.js" /}
+{js href="__ADMIN_PLUGINS__/fileinput/js/locales/zh.js" /}
+{js href="__ADMIN_PLUGINS__/fileinput/js/plugins/sortable.min.js" /}
+<!--multiselect-->
+{js href="__ADMIN_PLUGINS__/bootstrap-multiselect/js/bootstrap-multiselect.min.js" /}
+
+<!-- 数字输入插件 -->
+{js href="__ADMIN_PLUGINS__/bootstrap-number/bootstrap-number.min.js" /}
+<!--文件选择美化-->
+{js href="__ADMIN_PLUGINS__/bs-custom-file-input/bs-custom-file-input.min.js" /}
+<!-- color picker -->
+{js href="__ADMIN_PLUGINS__/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js" /}
+<!-- icon picker -->
+{js href="__ADMIN_PLUGINS__/fontawesome-iconpicker/js/fontawesome-iconpicker.min.js" /}
+<!-- layer -->
+{js href="__ADMIN_PLUGINS__/layer/layer.js" /}
+<!-- laydate -->
+{js href="__ADMIN_PLUGINS__/laydate/laydate.js" /}
+<!-- echarts -->
+{js href="__ADMIN_PLUGINS__/echarts/echarts.min.js" /}
+<!--{js href="__ADMIN_PLUGINS__/echarts/echarts.simple.min.js" /}-->
+<!-- jquery-validation -->
+{js href="__ADMIN_PLUGINS__/jquery-validation/jquery.validate.min.js" /}
+<!-- jquery-input-file-text -->
+{js href="__ADMIN_PLUGINS__/jquery-input-file-text/jquery-input-file-text.js" /}
+<!-- 图片预览插件 -->
+{js href="__ADMIN_PLUGINS__/viewer/viewer.min.js" /}
+{js href="__ADMIN_PLUGINS__/jquery-viewer/jquery-viewer.min.js" /}
+<!-- 剪切板 -->
+{js href="__ADMIN_PLUGINS__/clipboard/clipboard.min.js" /}
+<!-- wangEditor编辑器 -->
+{js href="__ADMIN_PLUGINS__/wangEditor/wangEditor.min.js" /}
+<!-- tree-multiselect-->
+{js href="__ADMIN_PLUGINS__/tree-multiselect/js/jquery.tree-multiselect.min.js" /}
+<!-- layui -->
+{js href="__ADMIN_PLUGINS__/layui/layui.js" /}
+<!-- 自适应顶部-->
+{js href="__ADMIN_PLUGINS__/bootstrap-autohidingnavbar/jquery.bootstrap-autohidingnavbar.js" /}
+<!-- 高德地图js -->
+<script src="//webapi.amap.com/maps?v=1.4.15&key={$admin.map.amap.js_api_key|default=''}&plugin=AMap.ToolBar,AMap.Autocomplete,AMap.PlaceSearch"></script>
+<!-- UI组件库 1.0 -->
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+
+<!-- AdminLTE -->
+{js href="__ADMIN_JS__/adminlte.min.js" /}
+<!-- 后台主要js -->
+{js href="__ADMIN_JS__/admin.js" /}
+<!-- 文件上传js(处理缓存问题)-->
+<script src="__ADMIN_JS__/upload.js?v=0.0.1"></script>
+<!-- 自定义前端验证js -->
+{js href="__ADMIN_JS__/validate.js" /}
+<!--查看大图-->
+{js href="__ADMIN_JS__/zoom.js" /}
+{js href="__ADMIN_PLUGINS__/xm-select/xm-select.js" /}
+<!--UEditorPlus-->
+{js href="__ADMIN_PLUGINS__/UEditorPlus/dist-min/ueditor.config.js" /}
+{js href="__ADMIN_PLUGINS__/UEditorPlus/dist-min/ueditor.all.js" /}

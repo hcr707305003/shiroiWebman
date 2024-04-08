@@ -1,0 +1,13 @@
+    /**
+     * 导出
+     * @param Request $request
+     * @param [MODEL_NAME] $model
+     * @return Response
+     * @throws Exception
+     */
+    public function export(Request $request, [MODEL_NAME] $model): Response
+    {
+        $param = $request->all();
+        $field_list = [[FILED_LIST]];
+        return $this->exportDataToBinary('[TABLE_NAME]', $field_list, $param);
+    }

@@ -1,0 +1,10 @@
+    /**
+     * 导入
+     * @param Request $request
+     * @return Response
+     */
+    public function import(Request $request): Response
+    {
+        $field_list = [[FILED_LIST]];
+        return $this->importData('[TABLE_NAME]', $field_list);
+    }

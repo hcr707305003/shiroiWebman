@@ -1,0 +1,68 @@
+<!--空白弹出页面参考模版-->
+{extend name='public/layer_base' /}
+{block name='content'}
+<!-- 这里写内容即可 -->
+<style>
+   #searchForm input{
+       margin-bottom: 0.6rem;
+       margin-right: 0.2rem;
+   }
+   #searchForm .btn{
+       margin-right: 0.2rem;
+   }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card-header dataSearch">
+            <form class="searchForm form-inline" id="searchForm" method="get">
+                <input value="{$get['id']|default=''}" name="id" class="form-control input-sm" placeholder="ID">
+                <input value="{$get['username']|default=''}" name="username" class="form-control input-sm" placeholder="用户名">
+                <input value="{$get['mobile']|default=''}" name="mobile" class="form-control input-sm" placeholder="手机">
+                <button class="btn btn-sm btn-primary" type="submit">
+                    <i class="fa fa-search"></i>查询
+                </button>
+                <button onclick="clearSearchForm()" class="btn btn-sm btn-default" type="button"><i
+                        class="fa  fa-eraser"></i> 清空查询
+                </button>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover table-bordered dataTable text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>id</th>
+                                    <th>用户名</th>
+                                    <th>手机</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach name='data' item='item'}
+                                    <tr>
+                                        <th><input id="id" name="id" type="radio" value="{$item.id}" /></th>
+                                        <th>{$item.id}</th>
+                                        <th>{$item.nickname}</th>
+                                        <th>{$item.mobile}</th>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer clearfix">
+                        {$page|raw}
+                        {include file='public/change_page' /}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    function getInputValue() {
+        return $("input[name='id']:checked").val();
+    }
+</script>
+{/block}

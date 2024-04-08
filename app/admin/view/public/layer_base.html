@@ -1,0 +1,17 @@
+{if !$admin.is_pjax}
+{include file='public/head_css' /}
+{include file='public/head_js' /}
+{/if}
+<style>
+    .cert-table thead tr{background-color: #F3F3F3;color: #000000}
+    .layui-form-onswitch{
+        background-color: #1e9fff;
+        border-color: #1e9fff;
+    }
+</style>
+<!-- 内容 -->
+<div id="pjaxContainer">
+    {block name='content'}
+    {/block}
+</div>
+

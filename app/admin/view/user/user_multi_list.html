@@ -1,0 +1,140 @@
+<!--空白弹出页面参考模版-->
+{extend name='public/layer_base' /}
+{block name='content'}
+<!-- 这里写内容即可 -->
+<style>
+    #searchForm input{
+        margin-bottom: 0.6rem;
+        margin-right: 0.2rem;
+    }
+    #searchForm .btn{
+        margin-right: 0.2rem;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+    <!--  navbar navbar-expand-lg fixed-top   -->
+        <div class="hiding-navbar">
+            <!-- 已选择的用户列表 -->
+            <div class="row" style="width: 100%;">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="row rowMultiSelect card-body">
+                            <label for="choose_user_id" class="col-sm-2 col-form-label" style="text-align:center;">选中的用户</label>
+                            <div class="col-sm-10 formInputDiv">
+                                <select style="width: 100%" name="choose_user_id" id="choose_user_id" data-placeholder="请选择用户" class="form-control fieldMultiSelect" multiple="multiple">
+                                </select>
+                            </div>
+                            <script>
+                                const queryString = window.location.search;
+                                const urlParams = new URLSearchParams(queryString);
+                                // 通过参数名称获取参数值
+                                const paramValue = urlParams.get('default_content_id');
+                                const content = $(window.parent.document).find("#"+paramValue).html()
+                                choose_user_list = JSON.parse(content)
+                                $('#choose_user_id').select2({
+                                    tags: true,
+                                    data: JSON.parse(content)
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                <!-- 处理顶部自动隐藏 -->
+                $(".hiding-navbar").autoHidingNavbar();
+            </script>
+        </div>
+        <div class="card-header dataSearch">
+            <form class="searchForm form-inline" id="searchForm" method="get">
+                <input value="" name="id" class="form-control input-sm" placeholder="ID" lay-affix="clear">
+                <input value="" name="username" class="form-control input-sm" placeholder="用户名" lay-affix="clear">
+                <input value="" name="mobile" class="form-control input-sm" placeholder="手机" lay-affix="clear">
+                <button class="btn btn-sm btn-primary" type="submit" lay-submit lay-filter="demo-table-search">
+                    <i class="fa fa-search"></i>查询
+                </button>
+                <button type="reset" class="btn btn-sm btn-default">
+                    <i class="fa  fa-eraser"></i>清空查询
+                </button>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body table-responsive p-0" >
+                        <table id="user_list" class="table table-hover table-bordered dataTable text-nowrap"  lay-filter="user_list"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var choose_user_list = []
+    layui.use('table', function(){
+        var table = layui.table;
+        var form = layui.form;
+
+        table.render({
+            elem: '#user_list',
+            url: '/admin/user/ajaxUserList', // 此处为静态模拟数据，实际使用时需换成真实接口
+            cols: [[
+                {width:150, title: '点击选择', templet: function(d){
+                    return `<a class="btn btn-default" onclick="chooseUserList(${d.id}, '${d.nickname}')">加入</a>`;
+                }},
+                {field:'id', title: 'ID', width:80, sort: true},
+                {field:'nickname', title: '用户名'},
+                {field:'mobile', title: '手机'}
+            ]],
+            page: true,
+            size:'lg',
+            cellMinWidth: 200,
+            cellMinHight:100,
+            response: {
+                statusName: 'code' //成功的状态码，默认：code
+                ,statusCode: 200
+                ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                ,countName: 'total' //数据总数的字段名称，默认：count
+                ,dataName: 'data' //数据列表的字段名称，默认：data
+            },
+        });
+
+        // 搜索提交
+        form.on('submit(demo-table-search)', function(data){
+            // 执行搜索重载
+            table.reload('user_list', {
+                page: {
+                    curr: 1 // 重新从第 1 页开始
+                },
+                where: {
+                    id: $("input[name='id']").val(),
+                    username: $("input[name='username']").val(),
+                    mobile: $("input[name='mobile']").val(),
+                } // 搜索的字段
+            });
+            return false; // 阻止默认 form 跳转
+        });
+    });
+    function chooseUserList(id, name) {
+        if ($('#choose_user_id option[value="'+id+'"]').length === 0) {
+            choose_user_list.push({id,name})
+            $('#choose_user_id').append(`<option value="${id}" selected>${name}</option>`).select2();
+        }
+    }
+
+    function getInputValue() {
+        const optionsObj = [];
+        $('#choose_user_id option:selected').each(function() {
+            optionsObj.push({
+                id: $(this).val(),
+                name: $(this).text(),
+                text: $(this).text(),
+                selected: true
+            });
+        });
+        return optionsObj;
+    }
+</script>
+{/block}
