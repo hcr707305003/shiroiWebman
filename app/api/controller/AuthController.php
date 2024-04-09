@@ -30,6 +30,7 @@ class AuthController extends ApiBaseController
      * @Apidoc\Returned("access_token",type="string",desc="验证token")
      * @Apidoc\Returned("exp_time",type="int",desc="token有效期")
      * @Apidoc\After(event="setGlobalHeader",key="token",value="res.data.data.access_token",desc="Token")
+     * @Apidoc\After(event="setGlobalHeader",key="refresh_token",value="res.data.data.refresh_token",desc="refresh Token")
      */
     public function login(Request $request, UserValidate $validate, AuthService $service): Response
     {
