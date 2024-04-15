@@ -119,7 +119,7 @@ class User extends CommonBaseModel
     public function getAvatarAttr($value, $data = [])
     {
         if($value && !l_array_exists(['http://', 'https://', '//'], $value)) {
-            $value = request()->domain().$value;
+            $value = (request() ?request()->domain(): server_config('domain')).$value;
         }
         return $value;
     }

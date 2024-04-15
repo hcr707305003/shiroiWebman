@@ -29,5 +29,9 @@ cache: #缓存，驱动默认file，选择redis则其他配置起效
   password: null
 queue: #队列,作用于异步
   db: 8 #使用的是redis，选择第8个库
+rpc: #定义rpc服务
+  host: 0.0.0.0 #地址
+  port: 3344 #端口
+  count: 4 #进程数
 wechat: #正式版为 "release"，体验版为 "trial"，开发版为 "develop"
   version: develop

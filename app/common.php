@@ -127,6 +127,19 @@ if (!function_exists('socket_config')) {
     }
 }
 
+if (!function_exists('rpc_config')) {
+    /**
+     * rpc config
+     * @param string|null $config
+     * @param $default
+     * @return mixed|null
+     */
+    function rpc_config(string $config = null, $default = null)
+    {
+        return all_config($config ? ("rpc.{$config}"): 'rpc', $default);
+    }
+}
+
 if (!function_exists('auth_config')) {
     /**
      * auth config
@@ -1414,6 +1427,9 @@ const CACHE = ENV['cache'] ?? [];
 
 //socket config
 const SOCKET = ENV['socket'] ?? [];
+
+//rpc config
+const RPC = ENV['rpc'] ?? [];
 
 //auth config
 const AUTH = ENV['auth'] ?? [];

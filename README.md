@@ -86,3 +86,24 @@ https://hg-code.gitee.io/apidoc-php/use/
           ]
       ];
       ```
+- ### 配置rpc远程调用服务
+   ```injectablephp
+    /**
+     * 测试rpc远程调用
+     * @example 请求地址: http://127.0.0.1:1111/api/test/test_rpc
+     * @return void
+     */
+    public function test_rpc()
+    {
+        $client = stream_socket_client('tcp://127.0.0.1:3344');
+        $request = [
+            'class'   => 'app\\common\\model\\User',
+            'method'  => 'findOrEmpty',
+            'args'    => [1], // 100 是 $uid
+        ];
+        fwrite($client, json_encode($request)."\n"); // text协议末尾有个换行符"\n"
+        $result = fgets($client, 10240000);
+        $result = json_decode($result, true);
+        dump($result);
+    }
+   ```

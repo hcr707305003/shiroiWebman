@@ -18,14 +18,14 @@ class Task
         $data = 'https://www.baidu.com';
 
         //控制台生成二维码
-        echo(Builder::create()
-            ->encoding(new Encoding('UTF-8'))
-            ->errorCorrectionLevel(new ErrorCorrectionLevelLow())
-            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-            ->writer(new ConsoleWriter())
-            ->data($data)
-            ->build()
-            ->getString());
+//        echo(Builder::create()
+//            ->encoding(new Encoding('UTF-8'))
+//            ->errorCorrectionLevel(new ErrorCorrectionLevelLow())
+//            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+//            ->writer(new ConsoleWriter())
+//            ->data($data)
+//            ->build()
+//            ->getString());
 
 
         //每个一分钟执行一下查库动作，防止mysql go away

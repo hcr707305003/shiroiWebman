@@ -51,6 +51,12 @@ return [
         'handler'  => process\Task::class
     ],
 
+    'json_rpc'  => [
+        'handler' => process\Rpc::class,
+        'listen'  => 'text://'.(RPC['host'] ?? '0.0.0.0') .':' . (RPC['port'] ?? '3344'), // 这里用了text协议，也可以用frame或其它协议
+        'count'   => RPC['count'] ?? 4, // 可以设置多进程
+    ]
+
     //开启一个websocket服务
 //    'websocket' => [
 //        // 这里指定进程类，就是上面定义的Pusher类

@@ -3,6 +3,8 @@ use support\Route;
 
 Route::group('/test', function () {
     Route::any('/test', [app\api\controller\TestController::class, 'test']);
+    //测试rpc远程调用
+    Route::any('/test_rpc', [app\api\controller\TestController::class, 'test_rpc']);
     //测试表单生成
     Route::any('/test_form_design', [app\api\controller\TestController::class, 'test_form_design']);
     //测试加密解密

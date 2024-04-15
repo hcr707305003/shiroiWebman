@@ -58,7 +58,7 @@
     "shopwwi/filesystem-oss": "^1.0",
     "intervention/image": "^2.7",
     "hg/apidoc": "^5.2",
-    "endroid/qr-code": "^4.8",
+    "endroid/qr-code": "^4.6",
     "chance-fyi/operation-log": "^2.0",
     "shiroi/xhprof-webman": "^0.0.5",
     "workerman/crontab": "^1.0"
