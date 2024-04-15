@@ -33,5 +33,6 @@ rpc: #定义rpc服务
   host: 0.0.0.0 #地址
   port: 3344 #端口
   count: 4 #进程数
+  key: shiroi11112222 #设置key，作用于安全验证
 wechat: #正式版为 "release"，体验版为 "trial"，开发版为 "develop"
   version: develop
