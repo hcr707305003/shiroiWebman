@@ -1,7 +1,7 @@
 server: #服务
   domain: http://127.0.0.1:1111 #域名
   debug: true #是否开始debug模式
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 11111 #服务端口
   response:
     http_code_sync: true #是否同步业务code
